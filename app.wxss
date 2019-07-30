@@ -5,7 +5,9 @@
 page,view,navigator,text,swiper,swiper-item,rich-text,button,input,image {
   box-sizing: border-box;
 }
-
+navigator{
+  
+}
 image {
   width: 100%;
 }

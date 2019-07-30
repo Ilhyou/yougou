@@ -21,7 +21,7 @@
 <!-- 轮播图结束 -->
 <!-- 分类导航开始 -->
 <view class="index_nav_cate">
-  <navigator wx:for="{{navCateList}}" wx:key="name">
+  <navigator hover-class="none" wx:for="{{navCateList}}" wx:key="name">
     <image class="" src="{{item.image_src}}" mode="widthFix" />
   </navigator>
 </view>
@@ -35,7 +35,7 @@
     </view>
     <!-- 内容 -->
     <view class="floor_list">
-      <navigator wx:for="{{item1.product_list}}" wx:for-index="index2" wx:for-item="item2" wx:key="name" class="goods_item">
+      <navigator hover-class="none" wx:for="{{item1.product_list}}" wx:for-index="index2" wx:for-item="item2" wx:key="name" class="goods_item">
         <image mode="{{index2===0?'widthFix':'scaleToFill'}}" src="{{item2.image_src}}"></image>
       </navigator>
     </view>
