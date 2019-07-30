@@ -6,7 +6,9 @@ Page({
    */
   data: {
     // 轮播图数据
-    swiperList: []
+    swiperList: [],
+    // 2 分类导航数组
+    navCateList: []
 
   },
 
@@ -14,7 +16,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getSwiperList()
+    this.getSwiperList();
+    this.getNavCateList();
   },
   // 获取轮播图数据
   getSwiperList() {
@@ -28,6 +31,19 @@ Page({
       }
     });
   },
+  // 获取导航数据
+  getNavCateList() {
+    wx.request({
+      url: 'https://api.zbztb.cn/api/public/v1/home/catitems',
+      success: (result) => {
+        this.setData({
+          navCateList: result.data.message
+        })
+      }
+    });
+
+  },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成
