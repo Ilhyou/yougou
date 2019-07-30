@@ -1,1 +1,9 @@
 /* pages/index/index.wxss */
+.index_swiper swiper {
+  /* 
+      原图的宽度 / 原图的高度 = 变化后的图片的宽度 / 变化后的高度 
+      变化后的高度 = 原图的高度 * 变化后的图片的宽度 / 原图的宽度
+      变化后的高度 = 340px * 750rpx / 750px
+  */
+  height: 340rpx;
+}

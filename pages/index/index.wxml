@@ -1,2 +1,20 @@
-<!--pages/index/index.wxml-->
+<!-- pages/index/index.wxml -->
 <SearchInput></SearchInput>
+<!-- 轮播图开始 -->
+<view class="index_swiper">
+  <!-- swiper 默认的宽度和高度 100% * 150px
+    image 默认的宽度 100%(320px) * 240px
+          原图的宽度 和高度 750px * 340px
+          mode="widthFix"
+    swiper标签 加一个高度 高度是要动态变化 
+    
+                height:340rpx; -->
+  <swiper class="" indicator-dots indicator-color="rgba(0,0,0,.3)" autoplay circular>
+    <swiper-item wx:for="{{swiperList}}" wx:key="goods_id">
+      <navigator class="" target="" url="" hover-class="navigator-hover" open-type="navigate">
+        <image mode="widthFix" src="{{item.image_src}}"></image>
+      </navigator>
+    </swiper-item>
+  </swiper>
+</view>
+<!-- 轮播图结束 -->
