@@ -12,6 +12,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.request({
+      url: 'https://api.zbztb.cn/api/public/v1/home/swiperdata',
+      success: (result) => {
+        console.log(result);
+      }
+    });
 
   },
 
