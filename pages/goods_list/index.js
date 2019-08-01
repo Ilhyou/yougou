@@ -1,4 +1,12 @@
 // pages/goods_list/index.js
+/*
+1 发送请求 获取商品列表的数据 
+  1 
+ */
+
+import {
+  request
+} from "../../request/index.js";
 Page({
 
   /**
@@ -21,7 +29,20 @@ Page({
         title: "价格",
         isActive: false
       }
-    ]
+    ],
+    // 页面要渲染的商品数组
+    goodsList: []
+  },
+  // 全局 接口参数 
+  QueryParams: {
+    // 关键字  小米 。。 可以为空字符串
+    query: "",
+    // 分类id 
+    cid: "",
+    // 页码 
+    pagenum: 1,
+    // 页容量
+    pagesize: 10
   },
   // 改变tabs标签的选中效果
   handleTitleChange(e) {
@@ -43,6 +64,20 @@ Page({
    */
   onLoad: function (options) {
     console.log(options);
+    this.QueryParams.cid = options.cid;
+    this.getGoodsList();
+  },
+  getGoodsList() {
+    request({
+        url: "/goods/search",
+        data: this.QueryParams
+      })
+      .then(res => {
+        // console.log(res);
+        this.setData({
+          goodsList: res.goods
+        })
+      })
   },
 
   /**

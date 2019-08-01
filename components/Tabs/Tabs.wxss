@@ -3,6 +3,7 @@ view.tabs {}
 
 .tabs .tabs_title {
   display: flex;
+  border-bottom: 5rpx solid #cccccc;
 }
 
 .tabs .title_item {
