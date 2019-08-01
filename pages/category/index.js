@@ -48,7 +48,7 @@ Page({
   onLoad: function (options) {
     // 1 发送请求之前 先判断 本地存储中有没有旧的数据
     // 默认值 空字符串 null  bool  都是false 
-    let cates = wx.getStorage('cates');
+    let cates = wx.getStorageSync('cates');
     // 没有数据 
     if (!cates) {
       this.getCategoryList()
@@ -84,7 +84,7 @@ Page({
       // 给全局参数 赋值
       this.Cates = res;
       // 把接口的数据存入到本地存储中 
-      wx.setStorage("cates", {
+      wx.setStorageSync("cates", {
         time: Date.now(),
         data: this.Cates
       });

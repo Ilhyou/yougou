@@ -1,2 +1,9 @@
-<!--pages/goods_list/index.wxml-->
-<text>pages/goods_list/index.wxml</text>
+<!-- pages/goods_list/index.wxml -->
+<SearchInput></SearchInput>
+<!-- 父向子传递数据 -->
+<!-- 绑定一个自定义事件 -->
+<Tabs tabs="{{tabs}}" bindtitleChange="handleTitleChange">
+  <block wx:if="{{tabs[0].isActive}}">0</block>
+<block wx:elif="{{tabs[1].isActive}}">1-正在开发中。。。。</block>
+  <block wx:elif="{{tabs[2].isActive}}">2-正在开发中。。。。</block>
+</Tabs>
