@@ -10,7 +10,7 @@
                 height:340rpx; 
     原图的宽度 / 原图的高度 = 变化后的图片的宽度(750rpx) / 变化后的高度？
       750px /  340px = 750rpx / xxx rpx -->
-  <swiper class="" indicator-dots indicator-color="rgba(0,0,0,.3)" autoplay circular>
+  <swiper class="" indicator-dots indicator-color="rgba(255,255,255,.5)" indicator-active-color="#fff"	 autoplay circular>
     <swiper-item wx:for="{{swiperList}}" wx:key="goods_id">
       <navigator class="" target="" url="" hover-class="navigator-hover" open-type="navigate">
         <image mode="widthFix" src="{{item.image_src}}"></image>

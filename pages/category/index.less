@@ -1,6 +1,6 @@
 /* pages/category/index.wxss */
 .cate_container {
-  padding-top: 5rpx;
+  // padding-top: 5rpx;
   display: flex;
   /* 当前高度 = 视口的高度 - 头部搜索框的高度 */
   /* height: calc; */
@@ -11,19 +11,33 @@
 
 .left_menu {
   flex: 1;
+  background-color: #eee;
 
   .menu_item {
-    height: 70rpx;
+    height: 80rpx;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30rpx;
     color: #000;
-  }
 
-  .active {
-    color: var(--themeColor);
-    border-left: 8rpx solid currentColor;
+    .menu_item_name {
+      width: 100px;
+      height: 60rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30rpx;
+    }
+
+    .active {
+      background-color: #fff;
+      color: var(--themeColor);
+      border-left: 8rpx solid currentColor;
+    }
+
+    &.active2 {
+      background-color: #fff;
+    }
   }
 }
 

@@ -51,9 +51,10 @@
 			"current": 0,
 			"list": [
 				{
-					"id": -1,
-					"name": "pages/category/index",
+					"id": 0,
+					"name": "分类页面",
 					"pathName": "pages/category/index",
+					"query": "",
 					"scene": null
 				}
 			]

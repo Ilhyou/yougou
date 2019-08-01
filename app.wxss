@@ -5,9 +5,6 @@
 page,view,navigator,text,swiper,swiper-item,rich-text,button,input,image {
   box-sizing: border-box;
 }
-navigator{
-  
-}
 image {
   width: 100%;
 }
@@ -18,4 +15,8 @@ page {
   /* 14px */
   font-size: 28rpx;
   color: #666;
+}
+.noData{
+  width: 100%;
+  text-align: center;
 }

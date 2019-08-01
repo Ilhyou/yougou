@@ -13,6 +13,7 @@
     "pages/login/index",
     "pages/auth/index",
     "pages/pay/index"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",
