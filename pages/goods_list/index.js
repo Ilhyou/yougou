@@ -18,6 +18,18 @@
       对旧的数组进行拼接 
   4 没有下页
     弹出提示。
+3 下拉刷新 
+  1 触发下拉刷新的事件 
+    1 需要在json文件中开启 运行下拉
+    2 页面js中 添加 一个 下拉刷新事件
+    3 可能需要在app.json文件中 修改下拉刷新的小圆点的颜色。。
+  2 实现刷新
+    1 重置 pagenum =1 
+    2 重置 data中的数组 goodsList =[]
+    3 重新发送请求！！
+      1 pagenum =1 
+      2 会对goodsList =[] 重新赋值！！
+    4 当数据请求回来 需要手动的关闭 下拉刷新窗口。。。 wx.stopPullDownRefresh()
  */
 
 import {
@@ -99,6 +111,10 @@ Page({
           // 为了做加载下一页 改成拼接
           goodsList: [...this.data.goodsList, ...res.goods]
         })
+        // 关闭下拉刷新窗口
+        // 1 页面第一次打开时候 有调用 下拉刷新窗口 
+        // 2 下拉刷新没有打开 也可以关闭 因为 没有操作 
+        wx.stopPullDownRefresh();
       })
   },
   /**
@@ -133,7 +149,16 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    console.log('下拉');
+    // 1 重置 页码
+    // 2 重置data中的数组
+    // 3 重新发送请求
 
+    this.QueryParams.pagenum = 1;
+    this.setData({
+      goodsList: []
+    })
+    this.getGoodsList();
   },
 
   /**
@@ -141,7 +166,6 @@ Page({
    * 滚动条触底 上拉加载下一页 事件
    */
   onReachBottom: function () {
-    console.log(123);
     //  1 先判断还有没有下一页数据
     if (this.QueryParams.pagenum > this.TotalPages) {
       // 没有下一页数据
