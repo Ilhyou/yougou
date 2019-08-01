@@ -1,7 +1,23 @@
 // pages/goods_list/index.js
 /*
 1 发送请求 获取商品列表的数据 
-  1 
+2 上拉加载下一页 
+  1 什么时候触发上拉加载下一页 也是 滚动条触底 才触发事件 
+    onReachBottom 存在于小程序的页面 生命周期中！！！
+  2 先判断 有没有下一页数据
+    1 当前的页码  和 总页数 （未知）
+      总页数 = Math.ceil(总的条数 / 页容量 ) 
+              21 / 10= 2.1  Math.ceil(2.1)=3 
+      当前的页码 >=  总页数  没有下一页数据 
+    2 什么地方写获取总页数 
+      接口请求成功之后 有了total属性之后就可以获取 
+  3 有下一页数据 
+    pagenum++;
+    发送请求。。
+      不能再对goodsList 全部替换 
+      对旧的数组进行拼接 
+  4 没有下页
+    弹出提示。
  */
 
 import {
@@ -44,6 +60,8 @@ Page({
     // 页容量
     pagesize: 10
   },
+  // 总页数
+  TotalPages: 1,
   // 改变tabs标签的选中效果
   handleTitleChange(e) {
     // 先获取子组件传递过来的数据
@@ -74,12 +92,15 @@ Page({
       })
       .then(res => {
         // console.log(res);
+        // 计算总页数
+        // 总页数 = Math.ceil(总的条数 / 页容量 )
+        this.TotalPages = Math.ceil(res.total / this.QueryParams.pagesize);
         this.setData({
-          goodsList: res.goods
+          // 为了做加载下一页 改成拼接
+          goodsList: [...this.data.goodsList, ...res.goods]
         })
       })
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -116,10 +137,25 @@ Page({
   },
 
   /**
-   * 页面上拉触底事件的处理函数
+   * 页面上拉触底事件的处理函数 
+   * 滚动条触底 上拉加载下一页 事件
    */
   onReachBottom: function () {
-
+    console.log(123);
+    //  1 先判断还有没有下一页数据
+    if (this.QueryParams.pagenum > this.TotalPages) {
+      // 没有下一页数据
+      console.log("没有下一页数据");
+      wx.showToast({
+        title: '没有下一页数据了',
+        icon: 'none'
+      });
+    } else {
+      // 还有下页数据
+      // console.log("还有下页数据");
+      this.QueryParams.pagenum++;
+      this.getGoodsList();
+    }
   },
 
   /**
