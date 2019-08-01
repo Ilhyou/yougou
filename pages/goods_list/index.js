@@ -37,8 +37,16 @@
     0 封装过一个发送请求的代码 request 
     1 发送异步请求之前显示
     2 异步请求成功 就关闭 
+5 将异步代码改成 更加优雅的 es 7 async语法 
+  0 旧版本的微信和旧的手机 直接不要在原生的小程序中使用 es7 的语法！！！
+  1 在方法的定义前 加一个 async 
+  2 在async描述的方法内 发送的异步代码  在它的前面加一个 await 即可 
+  3 容易报一个错误 运行环境不支持 es7 的代码 
+  4 会用一个方法 来解决代码中报错的问题
+    1 这个方法 不能解决所有的旧手机和旧微信的语法兼容问题 
  */
-
+// ES7 的 async/await  转成ES5
+import regeneratorRuntime from '../../lib/runtime/runtime';
 import {
   request
 } from "../../request/index.js";
@@ -102,28 +110,27 @@ Page({
   onLoad: function (options) {
     console.log(options);
     this.QueryParams.cid = options.cid;
-     // 显示等待
+    // 显示等待
     this.getGoodsList();
   },
-  getGoodsList() {
-    request({
-        url: "/goods/search",
-        data: this.QueryParams
-      })
-      .then(res => {
-        // console.log(res);
-        // 计算总页数
-        // 总页数 = Math.ceil(总的条数 / 页容量 )
-        this.TotalPages = Math.ceil(res.total / this.QueryParams.pagesize);
-        this.setData({
-          // 为了做加载下一页 改成拼接
-          goodsList: [...this.data.goodsList, ...res.goods]
-        })
-        // 关闭下拉刷新窗口
-        // 1 页面第一次打开时候 有调用 下拉刷新窗口 
-        // 2 下拉刷新没有打开 也可以关闭 因为 没有操作 
-        wx.stopPullDownRefresh();
-      })
+  async getGoodsList() {
+    const res = await request({
+      url: "/goods/search",
+      data: this.QueryParams
+    });
+    // console.log(res);
+    // 计算总页数
+    // 总页数 = Math.ceil(总的条数 / 页容量 )
+    this.TotalPages = Math.ceil(res.total / this.QueryParams.pagesize);
+    this.setData({
+      // 为了做加载下一页 改成拼接
+      goodsList: [...this.data.goodsList, ...res.goods]
+    })
+    // 关闭下拉刷新窗口
+    // 1 页面第一次打开时候 有调用 下拉刷新窗口 
+    // 2 下拉刷新没有打开 也可以关闭 因为 没有操作 
+    wx.stopPullDownRefresh();
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

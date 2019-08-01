@@ -21,7 +21,9 @@ import {
     2 没有缓存数据 直接发送新请求 获取数据 同时吧新的输入存入到本地存储中  
     3 有缓存数据 并且数据 没有过期 我们自己定一个过期时间 ！！！！
       此时再使用 缓存数据 
+
  */
+import regeneratorRuntime from '../../lib/runtime/runtime';
 Page({
 
   /**
@@ -76,36 +78,33 @@ Page({
     }
   },
   // 获取分类数据
-  getCategoryList() {
-    request({
+  async getCategoryList() {
+    var res = await request({
       url: "/categories"
-    }).then(res => {
-      console.log(res);
-      // 给全局参数 赋值
-      this.Cates = res;
-      // 把接口的数据存入到本地存储中 
-      wx.setStorageSync("cates", {
-        time: Date.now(),
-        data: this.Cates
-      });
+    })
+    // 给全局参数 赋值
+    this.Cates = res;
+    // 把接口的数据存入到本地存储中 
+    wx.setStorageSync("cates", {
+      time: Date.now(),
+      data: this.Cates
+    });
 
-      // let leftMenuList = res.map((v, i) => {
-      //   return {
-      //     cat_name: v.cat_name,
-      //     cat_id: v.cat_id
-      //   }
-      // });
-      let leftMenuList = this.Cates.map((v, i) => ({
-        cat_name: v.cat_name,
-        cat_id: v.cat_id
-      }));
-      // 这个是大家电对象 里面的children 数组
-      let rightGoodsList = this.Cates[0].children;
-      this.setData({
-        leftMenuList,
-        rightGoodsList
-
-      })
+    // let leftMenuList = res.map((v, i) => {
+    //   return {
+    //     cat_name: v.cat_name,
+    //     cat_id: v.cat_id
+    //   }
+    // });
+    let leftMenuList = this.Cates.map((v, i) => ({
+      cat_name: v.cat_name,
+      cat_id: v.cat_id
+    }));
+    // 这个是大家电对象 里面的children 数组
+    let rightGoodsList = this.Cates[0].children;
+    this.setData({
+      leftMenuList,
+      rightGoodsList
     })
   },
   // 左侧菜单的点击事件
