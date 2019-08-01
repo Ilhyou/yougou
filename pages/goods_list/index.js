@@ -30,6 +30,13 @@
       1 pagenum =1 
       2 会对goodsList =[] 重新赋值！！
     4 当数据请求回来 需要手动的关闭 下拉刷新窗口。。。 wx.stopPullDownRefresh()
+4 添加一个全局的正在加载中 效果
+  1 效果是哪个代码决定 wx.showLoading wx.hideLoading
+  2 思考在哪里进行调用会比较方便
+    -1 axios 请求拦截器 
+    0 封装过一个发送请求的代码 request 
+    1 发送异步请求之前显示
+    2 异步请求成功 就关闭 
  */
 
 import {
@@ -95,6 +102,7 @@ Page({
   onLoad: function (options) {
     console.log(options);
     this.QueryParams.cid = options.cid;
+     // 显示等待
     this.getGoodsList();
   },
   getGoodsList() {
