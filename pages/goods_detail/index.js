@@ -1,4 +1,9 @@
 // pages/goods_detail/index.js
+
+/* 
+1 点击轮播图 调出 图片预览功能
+  1 绑定点击事件  
+ */
 import {
   request
 } from "../../request/index.js";
@@ -11,7 +16,19 @@ Page({
   data: {
     goodsObj: {}
   },
+  // 点击图片 进行大屏预览
+  handlePreviewImage(e) {
+    const {
+      index
+    } = e.currentTarget.dataset;
+    const urls = this.data.goodsObj.pics.map(v => v.pics_big);
+    const current = urls[index];
+    wx.previewImage({
+      current,
+      urls
+    });
 
+  },
   /**
    * 生命周期函数--监听页面加载
    */

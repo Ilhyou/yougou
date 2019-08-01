@@ -1,6 +1,6 @@
 /* pages/goods_detail/index.wxss */
 page {
-  padding: 0 10rpx;
+  padding: 0 10rpx 90rpx;
 }
 .detail_swiper swiper {
   /* 
@@ -51,4 +51,33 @@ page {
   font-size: 40rpx;
   font-weight: 600;
   border-bottom: 14rpx solid #eee;
+}
+.btm_tool {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  height: 90rpx;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  border-top: 1rpx solid #dedede;
+}
+.btm_tool .tool_item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btm_tool .btn_cart {
+  flex: 2;
+  background-color: orange;
+  color: #fff;
+  font-size: 34rpx;
+}
+.btm_tool .btn_buy {
+  flex: 2;
+  background-color: orangered;
+  color: #fff;
+  font-size: 34rpx;
 }
