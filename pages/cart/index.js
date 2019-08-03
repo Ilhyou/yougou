@@ -20,6 +20,7 @@
   0 onLoad  onShow (我们要使用 )
   1 判断本地存储中有没有收货地址 如果有  把地址 赋给 data中的数据 
   2 此时 wxml页面就可以根据data中的数据 进行页面标签的显示和隐藏 
+
  */
 import regeneratorRuntime from '../../lib/runtime/runtime';
 import {
