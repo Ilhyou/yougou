@@ -20,7 +20,7 @@ export const chooseAddress = () => {
   return new Promise((reslove, reject) => {
     wx.chooseAddress({
       success: (result) => {
-        resolve(result)
+        reslove(result)
       },
       fail: (err) => {
         reject(err)
@@ -33,10 +33,10 @@ export const chooseAddress = () => {
  * promise的 wx.openSetting
  */
 export const openSetting = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((reslove, reject) => {
     wx.openSetting({
       success: (result) => {
-        resolve(result)
+        reslove(result)
       },
       fail: (err) => {
         reject(err)
