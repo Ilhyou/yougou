@@ -50,12 +50,23 @@
   3 直接给isAllCheck属性 取反 
   4 要让页面的所有的商品 跟随改变
   5 把 修改后的cart又填充回 data和缓存中。。。
+6 修改数量功能
+  1 给 + - 按钮绑定同一个事件 同时传递 操作符 +1 还是 -1  还需要传递要操作的商品的id
+  2 获取data中的购物车对象cart
+  3 根据 操作符 +1 还是 -1 
+    cart[id].num+=操作符;
+  4 当 当前点击的 -1 按钮 同时 购物车的数量等于 1的时候 
+    1 弹窗 确认框 是否要删除
+      1 取消 就什么都不做
+      2 确定 就执行删除
+  5 调用 this.setCart(cart);
  */
 import regeneratorRuntime from '../../lib/runtime/runtime';
 import {
   getSetting,
   openSetting,
-  chooseAddress
+  chooseAddress,
+  showModal
 } from "../../utils/asyncWx";
 Page({
 
@@ -213,6 +224,36 @@ Page({
     }
     // 4 调用setCart即可 
     this.setCart(cart);
+  },
+  // 购物车数量的编辑功能
+  async handleCartNumEdit(e) {
+    // 1 获取页面传递过来的参数
+    let {
+      id,
+      operation
+    } = e.currentTarget.dataset;
+    // 2 获取data中的购物车对象
+    let {
+      cart
+    } = this.data;
+    // 4 判断正常的修改数量还是 删除判断
+    if (operation === -1 && cart[id].num === 1) {
+      // 弹窗 提示 是否要删除
+      const res = await showModal({
+        content: "您确定要删除吗？"
+      });
+      if (res.confirm) {
+        // 删除购物车中的商品  本质删除对象中的一个属性而已！！！
+        delete cart[id];
+        this.setCart(cart);
+      }
+    } else {
+      // 3 修改要购买的商品的数量
+      // operation = +1 或者 = -1
+      // 5 让页面跟着发生改变
+      cart[id].num += operation;
+      this.setCart(cart);
+    }
   },
 
   /**
