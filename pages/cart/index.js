@@ -20,7 +20,20 @@
   0 onLoad  onShow (我们要使用 )
   1 判断本地存储中有没有收货地址 如果有  把地址 赋给 data中的数据 
   2 此时 wxml页面就可以根据data中的数据 进行页面标签的显示和隐藏 
-
+3 页面的数据动态渲染
+  0 在购物车页面新增购物车商品的时候
+    1 新增了数量 和  选中状态 
+  1 要渲染收货地址 
+  2 渲染购物车数据 
+  3 渲染全选 总价格 和 购物总数量
+    1 当用户手动的修改了 购买的数量 和 选中的状态 
+      1 都会重新修改data中的cart对象，把cart对象重新赋值到本地存储中 
+    2 经过分析  每当用户手动修改了  购买的数量 和 选中的状态 
+      1 都需要修改data中的cart 和 缓存中的cart 
+      2 都需要重新计算 总价格 和 购物总数量
+    3 干脆封装一个方法
+      1 修改 data和缓存数据
+      2 顺便计算总价格。。。
  */
 import regeneratorRuntime from '../../lib/runtime/runtime';
 import {
@@ -34,7 +47,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    address: {}
+    address: {},
+    cart: {},
+    isAllChecked: false,
+    totalNum: 0,
+    totalPrice: 0
   },
   // 获取收货地址
   async handleChooseAddress() {
@@ -119,10 +136,41 @@ Page({
   onShow: function () {
     //  1 获取本地存储中的 收货地址数据  默认值 空字符串
     const address = wx.getStorageSync("address") || {};
+    // 1 获取购物车数据
+    const cart = wx.getStorageSync("cart") || {};
     // 2 把address存入到data中
     this.setData({
       address
     });
+    this.setCart(cart);
+  },
+  // 设置购物车数据 和 计算 总价格。。
+  setCart(cart) {
+    // 0 把购物车对象转成 数组 
+    let cartArr = Object.values(cart);
+    console.log(cartArr);
+    // 1 计算是否都选中了
+    // every 会接收一个回调函数 当没有循化项都返回 true的时候 cartArr.every的返回值 才会是true 
+    let isAllChecked = cartArr.every(v => v.checked);
+    console.log(isAllChecked);
+    // 2 计算总价格 只计算了勾选的商品的价格 
+    let totalPrice = 0;
+    // 3 计算总数量 
+    let totalNum = 0;
+    cartArr.forEach(v => {
+      if (v.checked) {
+        totalPrice += v.num * v.goods_price;
+        totalNum += v.num;
+      }
+    })
+    this.setData({
+      cart,
+      isAllChecked,
+      totalPrice,
+      totalNum
+    });
+    // 防止数据改变了 刷新之后没有效果 所以也顺便存入到缓存中。
+    wx.setStorageSync('cart', cart);
   },
 
   /**

@@ -35,7 +35,7 @@
   align-items: center;
 }
 .cart_main .cart_main_list .cart_item .cart_img_wrap {
-  flex: 2;
+  flex: 3;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,7 +44,7 @@
   width: 80%;
 }
 .cart_main .cart_main_list .cart_item .cart_info_wrap {
-  flex: 3;
+  flex: 4;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
