@@ -33,12 +33,20 @@
       第一张图片的mode 属性 widthFix 
       后四张图片的mode 属性 scaleToFill  不管宽高比例 把图片内容拉伸至相框 
         */
+  /* 后四个超链接 */
 }
-.index_floor .floor_item .floor_list .goods_item:nth-last-child(-n+4) {
+.index_floor .floor_item .floor_list .goods_item:first-child {
+  height: 415.94827586rpx;
+}
+.index_floor .floor_item .floor_list .goods_item:first-child image {
+  height: 100% !important;
+}
+.index_floor .floor_item .floor_list .goods_item:nth-last-child(-n + 4) {
+  /* 让图片的宽度和高度 100%  */
   height: 207.97413793rpx;
   border-left: 10rpx solid #fff;
 }
-.index_floor .floor_item .floor_list .goods_item:nth-last-child(-n+4) image {
+.index_floor .floor_item .floor_list .goods_item:nth-last-child(-n + 4) image {
   height: 100%;
 }
 .index_floor .floor_item .floor_list .goods_item:nth-last-child(-n+2) {

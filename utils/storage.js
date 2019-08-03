@@ -12,3 +12,17 @@ export const getStorageCates = () => {
 export const setStorageCates = (obj) => {
   wx.setStorageSync("cates", obj);
 }
+
+/**
+ * 设置到购物车
+ * @param {Object} obj 
+ */
+export const setStorageCart = (obj) => {
+  wx.setStorageSync("cart", obj);
+}
+/**
+ * 获取购物车数据
+ */
+export const getStorageCart = () => {
+  return wx.getStorageSync("cart");
+}
