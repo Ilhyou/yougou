@@ -1,10 +1,64 @@
 // pages/cart/index.js
+/*1 点击按钮 获取收货地址
+  1 wx.chooseAddress -> 弹出对话框
+    1 点击允许  直接获取值就ok
+    2 点击取消 。。下次再点击 就没有任何效果  
+  1 先获取用户对该小程序的授予权限的信息  getSetting
+    1 已经授权了
+      授权返回值 是true   直接调用收货地址 接口代码  
+    2 没有授权
+      1 用户从来没有点击过 按钮  授权返回值 undefined 
+      2 用户点击了取消 按钮 ， 授权返回值 false 
+  2 假设授权信息 是 true 或者  undefined
+    1 直接调用获取收货地址的api 
+  2 假设授权信息 是false （用户明确不授权）
+    1 诱导用户 打开 授权页面( wx.openSetting)。等用户重新给与权限之后
+    2 再调用获取收货地址 
+ */
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+
+  },
+  // 获取收货地址
+  handleChooseAddress() {
+    // 1 获取用户对小程序的授权信息
+    wx.getSetting({
+      success: (result1) => {
+        // 获取到了授权信息
+        console.log(result1);
+        const scopeAddress = result1.authSetting['scope.address'];
+        // 用户授权过  或者 用户 从来没有调用过收货地址  
+        if (scopeAddress === true || scopeAddress === undefined) {
+          // 1.1 调用收货地址
+          wx.chooseAddress({
+            success: (result2) => {
+              console.log(result2);
+            }
+          });
+        } else {
+          // 2.1用户 点击 拒绝收货地址  诱导用户 打开授权页面 再调用获取收货地址
+          wx.openSetting({
+            success: (result) => {
+              // 2.2 再去调用 获取收货地址
+              wx.chooseAddress({
+                success: (result3) => {
+                  console.log(result3);
+                },
+                fail: () => {},
+                complete: () => {}
+              });
+            }
+          });
+
+        }
+      },
+      fail: () => {},
+      complete: () => {}
+    });
 
   },
 
