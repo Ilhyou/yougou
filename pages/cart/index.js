@@ -34,6 +34,22 @@
     3 干脆封装一个方法
       1 修改 data和缓存数据
       2 顺便计算总价格。。。
+4 购物车单个商品的选中切换
+  1 绑定change事件 给它父元素绑定 checkbox-group 同时传递参数 goods_id
+  2 事件的回调
+    1 获取要修改的购物车商品的 goods_id
+    2 获取data中的cart对象 
+    3 进行选中状态的取反  cart[goods_id].checked=!cart[goods_id].checked;
+    4 调用封装好的  setCart方法即可 
+    5 setCart 做了两件事
+      1 根据传入的cart对象 来重新计算 总价格。。。
+      2 把cart 设置到data中和缓存中 
+5 点击全选的时候 所有的商品选中状态跟着改变
+  1 绑定change事件 给它父元素绑定 checkbox-group
+  2 获取data中的 isAllCheck属性 
+  3 直接给isAllCheck属性 取反 
+  4 要让页面的所有的商品 跟随改变
+  5 把 修改后的cart又填充回 data和缓存中。。。
  */
 import regeneratorRuntime from '../../lib/runtime/runtime';
 import {
@@ -116,20 +132,6 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
    * 生命周期函数--监听页面显示
    */
   // 页面切换显示的时候 触发 onShow
@@ -150,7 +152,7 @@ Page({
     let cartArr = Object.values(cart);
     console.log(cartArr);
     // 1 计算是否都选中了
-    // every 会接收一个回调函数 当没有循化项都返回 true的时候 cartArr.every的返回值 才会是true 
+    // every 会接收一个回调函数 当所有循化项都返回 true的时候 cartArr.every的返回值 才会是true 
     let isAllChecked = cartArr.every(v => v.checked);
     console.log(isAllChecked);
     // 2 计算总价格 只计算了勾选的商品的价格 
@@ -172,7 +174,60 @@ Page({
     // 防止数据改变了 刷新之后没有效果 所以也顺便存入到缓存中。
     wx.setStorageSync('cart', cart);
   },
+  // 购物车选中切换
+  handleCartCheck(e) {
+    // 1 获取要操作的商品的id
+    const {
+      id
+    } = e.currentTarget.dataset;
+    //  2 获取data中的购物车对象
+    let {
+      cart
+    } = this.data;
+    // 3 把该购物车商品的选中状态进行取反
+    cart[id].checked = !cart[id].checked;
+    // 4 重新把cart的值填充会data和缓存中
+    // this.setData({cart});
+    // wx.setStorageSync('cart', cart);
 
+    this.setCart(cart);
+
+  },
+  // 全选反选功能
+  handleAllCheck() {
+    // 1 获取data中的 全选属性和 购物车对象
+    let {
+      cart,
+      isAllChecked
+    } = this.data;
+    // 2 给isAllChecked 取反
+    isAllChecked = !isAllChecked;
+    // 3 修改购物车总的商品的选中状态
+    for (const key in cart) {
+      // 对象有些属性是自己 有些是原型链上的！！
+      // 当属性是自身的 就可以继续执行
+      // hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性（也就是是否有指定的键）
+      if (cart.hasOwnProperty(key)) {
+        cart[key].checked = isAllChecked;
+      }
+    }
+    // 4 调用setCart即可 
+    this.setCart(cart);
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */

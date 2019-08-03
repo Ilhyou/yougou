@@ -33,7 +33,7 @@
 		>
 			<!-- 复选框 -->
 			<view class="cart_chk_wrap">
-				<checkbox-group bindchange="">
+				<checkbox-group bindchange="handleCartCheck" data-id="{{value.goods_id}}">
 					<checkbox checked="{{value.checked}}"/>
 				</checkbox-group>
 			</view>
@@ -62,7 +62,7 @@
 <view class="foot_tool">
 	<!-- 全选 -->
 	<view class="foot_all_chek">
-		<checkbox-group bindchange="">
+		<checkbox-group bindchange="handleAllCheck">
 			<checkbox checked="{{isAllChecked}}">全选</checkbox>
 		</checkbox-group>
 	</view>
