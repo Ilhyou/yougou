@@ -75,7 +75,7 @@
 		<view class="freight">包含运费</view>
 	</view>
 	<!-- 结算 -->
-	<view class="btn_pay">
+	<view class="btn_pay" bindtap='handlePay'>
 		结算({{totalNum}})
 	</view>
 </view>

@@ -60,6 +60,9 @@
       1 取消 就什么都不做
       2 确定 就执行删除
   5 调用 this.setCart(cart);
+7 结算按钮
+  1 当拥有了收货地址和购买的商品的时候 直接跳转到 结算页面
+  2 否则 主要收货地址和购买的商品 任意一个 不满足要求 都不能跳转 
  */
 import regeneratorRuntime from '../../lib/runtime/runtime';
 import {
@@ -78,7 +81,9 @@ Page({
     cart: {},
     isAllChecked: false,
     totalNum: 0,
-    totalPrice: 0
+    totalPrice: 0,
+    // 判断是否可以跳到结算页面
+    hasCart: false
   },
   // 获取收货地址
   async handleChooseAddress() {
@@ -164,7 +169,8 @@ Page({
     console.log(cartArr);
     // 1 计算是否都选中了
     // every 会接收一个回调函数 当所有循化项都返回 true的时候 cartArr.every的返回值 才会是true 
-    let isAllChecked = cartArr.every(v => v.checked);
+    // every 当是空数组调用它的时候 返回值就是true
+    let isAllChecked = cartArr.length ? cartArr.every(v => v.checked) : false;
     console.log(isAllChecked);
     // 2 计算总价格 只计算了勾选的商品的价格 
     let totalPrice = 0;
@@ -176,11 +182,14 @@ Page({
         totalNum += v.num;
       }
     })
+    // 4 购物车总是否 有数据
+    let hasCart = cartArr.length > 0 ? true : false;
     this.setData({
       cart,
       isAllChecked,
       totalPrice,
-      totalNum
+      totalNum,
+      hasCart
     });
     // 防止数据改变了 刷新之后没有效果 所以也顺便存入到缓存中。
     wx.setStorageSync('cart', cart);
@@ -253,6 +262,41 @@ Page({
       // 5 让页面跟着发生改变
       cart[id].num += operation;
       this.setCart(cart);
+    }
+  },
+  // 结算按钮的点击事件
+  handlePay() {
+    // 1 判断有 没有收货地址 和 购买的商品
+    // hasCart 只表示 有没有商品 没有表示该商品是否选中 
+    let {
+      address,
+      cart
+    } = this.data;
+    let cartArr = Object.values(cart);
+    // 只要购物车 有一个 商品 被勾选了   这个变量的值 就应该为true
+    // some 函数表示 数组中 有一个 返回是 true那么 整个some的返回值 就是true 
+    let hasCheckedCart = cartArr.some(v => v.checked);
+    // 1 判断有没有收货地址
+    if (!address.userName) {
+      // 没有收货地址
+      wx.showToast({
+        title: '您还没有选择收货地址',
+        icon: 'none',
+        mask: true
+      });
+    } else if (!hasCheckedCart) {
+      // 没有 选中要购买的商品 
+      wx.showToast({
+        title: '您还没有选购商品',
+        icon: 'none',
+        mask: true
+      });
+    } else {
+      // 都满足条件
+      wx.navigateTo({
+        url: '/pages/pay/index'
+      });
+
     }
   },
 
